@@ -1,0 +1,28 @@
+name: resources_loader
+version: 0.0.1
+description: resources loader
+author: yamal lng
+homepage: http://yamallng.ru/
+
+# Pubspec Format:
+# https://www.dartlang.org/tools/pub/pubspec
+#
+# Repository of packages of software for the Dart programming language:
+# https://pub.dartlang.org/
+
+dependencies:
+    angular2: ^2.2.0                      # Dart implementation of the Angular web framework. https://pub.dartlang.org/packages/angular2
+    browser: ^0.10.0+2                    # The bootstrap dart.js script for Dart apps running in the browser. https://pub.dartlang.org/packages/browser
+    dart_to_js_script_rewriter: ^1.0.2    # Replaces Dart script tags with JavaScript script tags. https://pub.dartlang.org/packages/dart_to_js_script_rewriter
+dev_dependencies:
+    test: ^0.12.18                        # A library for writing dart unit tests. https://pub.dartlang.org/packages/test
+    yaml: ^2.1.12                         # A parser for YAML. https://pub.dartlang.org/packages/yaml
+
+# Used to configure dart2js or other transformers
+transformers:
+    - dart_to_js_script_rewriter
+    - $dart2js:
+        commandLineOptions:
+            - --trust-type-annotations
+            - --trust-primitives
+            - --show-package-warnings # Show warnings and hints generated from packages.
