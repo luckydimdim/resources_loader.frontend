@@ -1,28 +1,10 @@
 import 'dart:html';
 import 'dart:collection';
 import 'package:angular2/core.dart';
-
-class Handler {
-
-  String state; // текущее состояние скрипта
-
-  List<dynamic> onDataCallbacks;
-  List<dynamic> onErrorCallbacks;
-  List<dynamic> onDoneCallbacks;
-
-  Handler(){
-
-    onDataCallbacks = new List<dynamic>();
-    onErrorCallbacks = new List<dynamic>();
-    onDoneCallbacks = new List<dynamic>();
-
-  }
-}
-
-
+import 'handler.dart';
 
 @Injectable()
-class ResourcesLoader  {
+class ResourcesLoaderService  {
 
   SplayTreeMap _loadedLinks;
   SplayTreeMap _loadedScripts;
