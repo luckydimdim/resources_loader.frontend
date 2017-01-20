@@ -9,7 +9,7 @@ class ResourcesLoaderService  {
   SplayTreeMap _loadedLinks;
   SplayTreeMap _loadedScripts;
 
-  ResourcesLoader(){
+  ResourcesLoaderService(){
     _loadedLinks = new SplayTreeMap();
     _loadedScripts = new SplayTreeMap();
   }
