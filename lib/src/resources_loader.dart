@@ -16,6 +16,8 @@ class ResourcesLoaderService  {
 
   void loadStyle(String url,String file, {onData(), onError(error), onDone()}){
 
+      var originalFileName = file;
+
       file = file.toLowerCase();
 
       if (_loadedLinks.containsKey(file)) {
@@ -56,7 +58,7 @@ class ResourcesLoaderService  {
         var commonLink = new LinkElement()
           ..type = 'text/css'
           ..rel = 'stylesheet'
-          ..href = url + file;
+          ..href = url + originalFileName;
         document.head.append(commonLink);
 
         commonLink.onLoad.listen((e) => _onData(e, _loadedLinks,file), onError: (error) => _onError(_loadedLinks, file, error), onDone: () => _onDone(_loadedLinks,file));
@@ -65,6 +67,7 @@ class ResourcesLoaderService  {
 
   void loadScript(String url,String file, bool async, {onData(), onError(error), onDone()}){
 
+    var originalFileName = file;
     file = file.toLowerCase();
 
     if (_loadedScripts.containsKey(file)) {
@@ -105,7 +108,7 @@ class ResourcesLoaderService  {
       var gridScript = new ScriptElement()
         ..async = async
         ..type = 'text/javascript'
-        ..src = url + file;
+        ..src = url + originalFileName;
       document.head.append(gridScript);
 
       gridScript.onLoad.listen((e) => _onData(e,_loadedScripts,file), onError: (error) => _onError(_loadedScripts, file, error), onDone: () => _onDone(_loadedScripts,file));
