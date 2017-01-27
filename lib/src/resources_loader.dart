@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:html';
 import 'dart:collection';
 import 'package:angular2/core.dart';
@@ -113,6 +114,56 @@ class ResourcesLoaderService  {
 
       gridScript.onLoad.listen((e) => _onData(e,_loadedScripts,file), onError: (error) => _onError(_loadedScripts, file, error), onDone: () => _onDone(_loadedScripts,file));
     }
+  }
+
+  Future<bool> loadScriptAsync(String url, String file, bool async) {
+    var _c = new Completer();
+
+    var originalFileName = file;
+    file = file.toLowerCase();
+
+    if (_loadedScripts.containsKey(file)) {
+      Handler handler = _loadedScripts[file];
+
+      if (handler.state == 'loading')
+        handler.onCompleterCallbacks.add(_c);
+      else
+        _c.complete(true);
+    }
+    else {
+      var handler = new Handler();
+
+      handler.state = 'loading';
+
+      handler.onCompleterCallbacks.add(_c);
+
+      _loadedScripts[file] = handler;
+
+      var gridScript = new ScriptElement()
+        ..async = async
+        ..type = 'text/javascript'
+        ..src = url + originalFileName;
+      document.head.append(gridScript);
+
+
+      gridScript.onLoad.listen((_) => _Process(_c, _loadedScripts, file, true));
+      gridScript.onError.listen((_) => _Process(_c, _loadedScripts, file, false));
+
+    }
+
+    return _c.future;
+  }
+
+  void _Process(Completer c, SplayTreeMap map, String file, bool success) {
+    Handler handler = map[file];
+
+    handler.state = 'data';
+
+    handler.onCompleterCallbacks.forEach((value) {
+      value.complete(success);
+    });
+
+    handler.onCompleterCallbacks.clear();
   }
 
   void _onData(dynamic event, SplayTreeMap map, String file){
